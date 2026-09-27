@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +26,21 @@ jobs:
       - run: flutter analyze
       - run: flutter test
       - run: flutter build apk --release
+      - run: cp build/app/outputs/flutter-apk/app-release.apk gestion-magasin.apk
       - uses: actions/upload-artifact@v4
         with:
           name: gestion-magasin-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: gestion-magasin.apk
+      # Publishes the APK as a GitHub Release so it can be downloaded
+      # directly from a phone browser (no zip, no login needed on public repos).
+      - uses: softprops/action-gh-release@v2
+        if: github.event_name != 'pull_request'
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: تسيير المحل — نسخة ${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          body: |
+            ملف التثبيت للأندرويد: حمّل `gestion-magasin.apk` ثم افتحه على الهاتف.
+            الفرع: ${{ github.ref_name }}
+          make_latest: 'true'
+          files: gestion-magasin.apk

@@ -31,7 +31,8 @@ flutter build apk      # ملف APK في build/app/outputs/flutter-apk/
 flutter test           # الاختبارات
 ```
 
-كما يبني GitHub Actions ملف APK تلقائيا عند كل push (تبويب **Actions** ← آخر تشغيل ← `gestion-magasin-apk`).
+كما يبني GitHub Actions ملف APK تلقائيا عند كل push وينشره في **Releases**؛ لتحميل آخر نسخة مباشرة على الهاتف:
+https://github.com/djennad/gestion-frigo/releases/latest/download/gestion-magasin.apk
 
 ## بنية المشروع
 
